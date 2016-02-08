@@ -1,4 +1,4 @@
-package main
+package intern
 
 // #include <intern/strings.h>
 // #include <intern/optimize.h>
