@@ -84,7 +84,7 @@ func (repo *Repository) AllocatedBytes() uint64 {
 func (repo *Repository) Cursor() *Cursor {
 	cursor := _Ctype_struct_strings_cursor{}
 	C.strings_cursor_init(&cursor, repo.ptr)
-	return &Cursor{&cursor}
+	return &Cursor{repo, &cursor}
 }
 
 // Optimize creates a new, optimized string repository which stores the most
@@ -100,7 +100,7 @@ func (repo *Repository) Optimize(freq *Frequency) *Repository {
 func (repo *Repository) Snapshot() *Snapshot {
 	snapshot := _Ctype_struct_strings_snapshot{}
 	C.strings_snapshot(repo.ptr, &snapshot)
-	return &Snapshot{&snapshot}
+	return &Snapshot{repo, &snapshot}
 }
 
 // Restore restores the string repository to a previous snapshot
@@ -113,12 +113,14 @@ func (repo *Repository) Restore(snapshot *Snapshot) error {
 
 // Snapshot is a snapshot of a string repository
 type Snapshot struct {
-	ptr *C.struct_strings_snapshot
+	repo *Repository
+	ptr  *C.struct_strings_snapshot
 }
 
 // Cursor is used to iterate strings in a repository
 type Cursor struct {
-	ptr *C.struct_strings_cursor
+	repo *Repository
+	ptr  *C.struct_strings_cursor
 }
 
 // ID returns the ID that the cursor currently points to
