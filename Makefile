@@ -18,4 +18,4 @@ lint:
 clean:
 	rm $(COVER)
 
-.PHONY: check coverage clean
+.PHONY: check coverage lint clean
