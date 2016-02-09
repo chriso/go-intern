@@ -10,6 +10,11 @@ coverage:
 	go test -coverprofile=$(COVER)
 	go tool cover -html=$(COVER)
 
+lint:
+	go vet .
+	golint .
+
+
 clean:
 	rm $(COVER)
 
