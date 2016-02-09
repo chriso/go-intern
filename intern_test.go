@@ -36,6 +36,13 @@ func TestAllocatedBytes(t *testing.T) {
 	}
 }
 
+func TestPageSize(t *testing.T) {
+	repo := NewRepository()
+	if repo.PageSize() == 0 {
+		t.Error("invalid PageSize() result")
+	}
+}
+
 func TestLookupID(t *testing.T) {
 	repo := NewRepository()
 	repo.Intern("foo")

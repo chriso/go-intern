@@ -111,6 +111,11 @@ func (repo *Repository) Restore(snapshot *Snapshot) error {
 	return nil
 }
 
+// PageSize returns the compile-time page size setting
+func (repo *Repository) PageSize() uint64 {
+	return uint64(C.strings_page_size())
+}
+
 // Snapshot is a snapshot of a string repository
 type Snapshot struct {
 	repo *Repository
