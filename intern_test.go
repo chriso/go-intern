@@ -257,3 +257,87 @@ func BenchmarkOptimize1k(b *testing.B) {
 		repo.Optimize(freq)
 	}
 }
+
+func ExampleRepository_Intern() {
+	repo := NewRepository()
+	fmt.Println(repo.Intern("foo"))
+	fmt.Println(repo.Intern("bar"))
+	fmt.Println(repo.Intern("baz"))
+	fmt.Println(repo.Intern("foo"))
+	// Output:
+	// 1
+	// 2
+	// 3
+	// 1
+}
+
+func ExampleRepository_Lookup() {
+	repo := NewRepository()
+	repo.Intern("foo")
+	for _, str := range []string{"foo", "bar"} {
+		if id, ok := repo.Lookup(str); ok {
+			fmt.Printf("Found string %#v with id %d\n", str, id)
+		} else {
+			fmt.Printf("Did not find string %#v\n", str)
+		}
+	}
+	// Output:
+	// Found string "foo" with id 1
+	// Did not find string "bar"
+}
+
+func ExampleRepository_LookupID() {
+	repo := NewRepository()
+	repo.Intern("foo")
+	for _, id := range []uint32{1, 2} {
+		if str, ok := repo.LookupID(id); ok {
+			fmt.Printf("Found string %#v with id %d\n", str, id)
+		} else {
+			fmt.Printf("Did not find id %d\n", id)
+		}
+	}
+	// Output:
+	// Found string "foo" with id 1
+	// Did not find id 2
+}
+
+func ExampleRepository_Cursor() {
+	repo := NewRepository()
+
+	strings := []string{"foo", "bar", "baz"}
+	for _, str := range strings {
+		repo.Intern(str)
+	}
+
+	cursor := repo.Cursor()
+	for cursor.Next() {
+		fmt.Printf("String %#v has id %d\n", cursor.String(), cursor.ID())
+	}
+
+	// Output:
+	// String "foo" has id 1
+	// String "bar" has id 2
+	// String "baz" has id 3
+}
+
+func ExampleRepository_Optimize() {
+	repo := NewRepository()
+	frequencies := NewFrequency()
+
+	strings := []string{"foo", "bar", "baz", "baz", "baz", "foo"}
+	for _, str := range strings {
+		id := repo.Intern(str)
+		frequencies.Add(id)
+	}
+
+	optimized := repo.Optimize(frequencies)
+	cursor := optimized.Cursor()
+	for cursor.Next() {
+		fmt.Printf("String %#v has id %d\n", cursor.String(), cursor.ID())
+	}
+
+	// Output:
+	// String "baz" has id 1
+	// String "foo" has id 2
+	// String "bar" has id 3
+}
