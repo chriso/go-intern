@@ -10,18 +10,20 @@ import (
 	"runtime"
 )
 
+// ErrInvalidSnapshot is returned by Repository.Restore when the
+// repository and snapshot are imcompatible
+var ErrInvalidSnapshot = fmt.Errorf("invalid snapshot")
+
 // Repository stores a collection of unique strings
 type Repository struct {
 	ptr *C.struct_strings
 }
 
-func outOfMemory() {
-	panic("out of memory")
+// NewRepository creates a new string repository
+func NewRepository() *Repository {
+	ptr := C.strings_new()
+	return newRepositoryFromPtr(ptr)
 }
-
-// ErrInvalidSnapshot is returned by Repository.Restore when the
-// repository and snapshot are imcompatible
-var ErrInvalidSnapshot = fmt.Errorf("invalid snapshot")
 
 func newRepositoryFromPtr(ptr *C.struct_strings) *Repository {
 	if ptr == nil {
@@ -32,10 +34,12 @@ func newRepositoryFromPtr(ptr *C.struct_strings) *Repository {
 	return repo
 }
 
-// NewRepository creates a new string repository
-func NewRepository() *Repository {
-	ptr := C.strings_new()
-	return newRepositoryFromPtr(ptr)
+func outOfMemory() {
+	panic("out of memory")
+}
+
+func (repo *Repository) free() {
+	C.strings_free(repo.ptr)
 }
 
 // Count returns the total number of unique strings in the repository
@@ -43,7 +47,7 @@ func (repo *Repository) Count() uint32 {
 	return uint32(C.strings_count(repo.ptr))
 }
 
-// Intern interns a string and returns a unique ID. Note that IDs increment
+// Intern interns a string and returns its unique ID. Note that IDs increment
 // from 1
 func (repo *Repository) Intern(str string) uint32 {
 	id := uint32(C.strings_intern(repo.ptr, C.CString(str)))
@@ -74,10 +78,6 @@ func (repo *Repository) LookupID(id uint32) (string, bool) {
 // repository
 func (repo *Repository) AllocatedBytes() uint64 {
 	return uint64(C.strings_allocated_bytes(repo.ptr))
-}
-
-func (repo *Repository) free() {
-	C.strings_free(repo.ptr)
 }
 
 // Cursor creates a new cursor for iterating strings
