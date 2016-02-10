@@ -35,7 +35,7 @@ import (
 )
 
 // ErrInvalidSnapshot is returned by Repository.Restore when the
-// repository and snapshot are imcompatible
+// repository and snapshot are incompatible
 var ErrInvalidSnapshot = fmt.Errorf("invalid snapshot")
 
 // Repository stores a collection of unique strings
