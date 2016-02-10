@@ -1,31 +1,28 @@
+// Package intern implements fast, immutable string interning.
+//
+// The package is a cgo binding for libintern:
+//
+//     https://github.com/chriso/intern
+//
+// Interning is a way of storing distinct strings only once in memory:
+//
+//     https://en.wikipedia.org/wiki/String_interning
+//
+// Each string is assigned an ID of type uint32. IDs start at 1 and
+// increment towards 2^32-1:
+//
+// 	repository := intern.NewRepository()
+// 	id := repository.intern("foo")
+// 	fmt.Println(id) // => 1
+// 	id := repository.intern("bar")
+// 	fmt.Println(id) // => 2
+// 	id := repository.intern("foo")
+// 	fmt.Println(id) // => 1
+//
+// Note that this library is *not* safe to use from multiple goroutines unless:
+// a) libintern was compiled with THREAD_SAFE=1, or b) the caller uses its
+// own locking mechanism (e.g. https://golang.org/pkg/sync/#Mutex).
 package intern
-
-/*
-Package intern implements fast, immutable string interning.
-
-The package is a cgo binding for libintern:
-
-    https://github.com/chriso/intern
-
-Interning is a way of storing distinct strings only once in memory:
-
-    https://en.wikipedia.org/wiki/String_interning
-
-Each string is assigned an ID of type uint32. IDs start at 1 and
-increment towards 2^32-1:
-
-	repository := intern.NewRepository()
-	id := repository.intern("foo")
-	fmt.Println(id) // => 1
-	id := repository.intern("bar")
-	fmt.Println(id) // => 2
-	id := repository.intern("foo")
-	fmt.Println(id) // => 1
-
-Note that this library is *not* safe to use from multiple goroutines unless:
-a) libintern was compiled with THREAD_SAFE=1, or b) the caller uses its
-own locking mechanism (e.g. https://golang.org/pkg/sync/#Mutex).
-*/
 
 // #include <intern/strings.h>
 // #include <intern/optimize.h>
