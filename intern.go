@@ -2,16 +2,16 @@
 //
 // The package is a cgo binding for libintern:
 //
-//     https://github.com/chriso/intern
+//	https://github.com/chriso/intern
 //
 // Interning is a way of storing distinct strings only once in memory:
 //
-//     https://en.wikipedia.org/wiki/String_interning
+//	https://en.wikipedia.org/wiki/String_interning
 //
 // Each string is assigned an ID of type uint32. IDs start at 1 and
 // increment towards 2^32-1:
 //
-// 	repository := intern.NewRepository()
+//	repository := intern.NewRepository()
 //
 // 	id := repository.intern("foo")
 // 	fmt.Println(id) // => 1
@@ -22,8 +22,11 @@
 // 	id := repository.intern("foo")
 // 	fmt.Println(id) // => 1
 //
-// This package is *NOT* safe to use from multiple goroutines with mutual
-// exclusion (e.g. https://golang.org/pkg/sync/#Mutex).
+// 	id := repository.intern("qux")
+// 	fmt.Println(id) // => 3
+//
+// This package is *NOT* safe to use from multiple goroutines without
+// mutual exclusion, e.g. https://golang.org/pkg/sync/#Mutex
 package intern
 
 // #include <intern/strings.h>
