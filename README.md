@@ -1,3 +1,3 @@
-Go bindings to [chriso/intern](http://github.com/chriso/intern).
+Go bindings to [chriso/intern](http://github.com/chriso/intern)
 
-See the [API reference](https://godoc.org/github.com/chriso/go-intern).
+[![GoDoc](https://godoc.org/github.com/chriso/go-intern?status.svg)](https://godoc.org/github.com/chriso/go-intern)
