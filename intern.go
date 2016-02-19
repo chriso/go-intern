@@ -35,6 +35,10 @@
 //    fmt.Printf("string with ID 1: %v", str)
 //  }
 //
+// The package also provides a way to iterate unique strings in order
+// of ID, optimize string repositories using frequency analysis, and
+// restore string repositories to a previous snapshot.
+//
 // This package is *NOT* safe to use from multiple goroutines without
 // locking, e.g. https://golang.org/pkg/sync/#Mutex
 package intern
