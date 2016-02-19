@@ -5,10 +5,13 @@ go:
   - release
   - tip
 
+sudo: required
+
 before_script:
   - git clone --depth 1 https://github.com/chriso/intern.git &&
     cd intern &&
     cmake . &&
-    make install
+    make &&
+    sudo make install
 
 script: go test -v ./...
