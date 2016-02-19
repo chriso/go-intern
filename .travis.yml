@@ -1,0 +1,18 @@
+language: go
+
+go:
+  - 1.5.2
+  - release
+  - tip
+
+sudo: required
+
+before_script:
+  - git clone --depth 1 https://github.com/chriso/intern.git &&
+    pushd intern &&
+    cmake -DCMAKE_INSTALL_PREFIX=/usr . &&
+    make &&
+    sudo make install &&
+    popd
+
+script: go test -v ./...
