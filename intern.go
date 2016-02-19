@@ -91,8 +91,9 @@ func (repo *Repository) Count() uint32 {
 }
 
 // Intern interns a string and returns its unique ID. Note that IDs increment
-// from 1. This function will panic if the string does not fit in one page:
-// len(string) < repo.PageSize()
+// from 1. This function will panic if the string does not fit in one page -
+// len(string) < repo.PageSize() - or if the uint32 IDs overflow. It is the
+// caller's responsibility to check that these constraints are met
 func (repo *Repository) Intern(str string) uint32 {
 	id := uint32(C.strings_intern(repo.ptr, C.CString(str)))
 	if id == 0 {
