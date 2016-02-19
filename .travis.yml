@@ -6,7 +6,7 @@ go:
   - tip
 
 before_script:
-  - git clone git@github.com:chriso/intern.git &&
+  - git clone --depth 1 https://github.com/chriso/intern.git &&
     cd intern &&
     cmake . &&
     make install
