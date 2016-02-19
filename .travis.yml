@@ -1,0 +1,14 @@
+language: go
+
+go:
+  - 1.5.2
+  - release
+  - tip
+
+before_script:
+  - git clone git@github.com:chriso/intern.git &&
+    cd intern &&
+    cmake . &&
+    make install
+
+script: go test -v ./...
