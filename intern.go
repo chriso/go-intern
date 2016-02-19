@@ -25,8 +25,18 @@
 // 	id := repository.intern("qux")
 // 	fmt.Println(id) // => 3
 //
+// Two-way lookup is provided:
+//
+//  if id, ok := repository.Lookup("foo"); ok {
+//    fmt.Printf("string 'foo' has ID: %v", id)
+//  }
+//
+//  if str, ok := repository.LookupID(1); ok {
+//    fmt.Printf("string with ID 1: %v", str)
+//  }
+//
 // This package is *NOT* safe to use from multiple goroutines without
-// mutual exclusion, e.g. https://golang.org/pkg/sync/#Mutex
+// locking, e.g. https://golang.org/pkg/sync/#Mutex
 package intern
 
 // #include <intern/strings.h>
