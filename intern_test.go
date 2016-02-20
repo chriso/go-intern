@@ -74,12 +74,16 @@ func TestCount(t *testing.T) {
 }
 
 func TestLargeRepository(t *testing.T) {
+	if testing.Short() {
+		t.SkipNow()
+	}
+
 	count := 100000
 
 	repo := NewRepository()
 	startSize := repo.AllocatedBytes()
 	for i := 1; i <= count; i++ {
-		str := fmt.Sprintf("%d", i)
+		str := fmt.Sprintf("x%d", i)
 		id := repo.Intern(str)
 		if int(id) != i {
 			t.Error("invalid Intern() result")
@@ -112,7 +116,7 @@ func TestLargeRepository(t *testing.T) {
 	}
 	for cursor.Next() {
 		i++
-		str := fmt.Sprintf("%d", i)
+		str := fmt.Sprintf("x%d", i)
 		if int(cursor.ID()) != i || cursor.String() != str {
 			t.Error("invalid cursor position")
 		}
