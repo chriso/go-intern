@@ -50,6 +50,7 @@ import "C"
 
 import (
 	"fmt"
+	"math/rand"
 	"runtime"
 )
 
@@ -72,6 +73,8 @@ func newRepositoryFromPtr(ptr *C.struct_strings) *Repository {
 	if ptr == nil {
 		outOfMemory()
 	}
+	hashSeed := rand.Uint32()
+	C.strings_hash_seed(ptr, C.uint32_t(hashSeed))
 	repo := &Repository{ptr}
 	runtime.SetFinalizer(repo, (*Repository).free)
 	return repo
